@@ -1,0 +1,19 @@
+diff -urN -x CYGWIN-PATCHES -x 'aclocal.m4*' -x ltmain.sh -x 'config.*' -x depcomp -x install-sh -x missing -x mkinstalldirs -x autom4te.cache -x '*compile' -x Makefile.in.in -x 'intltool*.in' -x 'xml-i18n-*.in' -x '*.pyc' -x '*.mo' -x '*.gmo' -x ABOUT-NLS -x Makevars.template -x COPYING -x INSTALL -x mdate-sh -x '*.orig' -x '*.rej' -x '*~' -x '*.temp' -x texinfo.tex -x ylwrap -x Makefile.in -x makefile.in -x configure -x gnome-doc-utils.make -x gnome-doc-utils.m4 -x intltool.m4 -x omf.make -x xmldocs.make origsrc/jikes-1.22/src/platform.cpp src/jikes-1.22/src/platform.cpp
+--- origsrc/jikes-1.22/src/platform.cpp	2004-03-23 08:03:56.000000000 -0600
++++ src/jikes-1.22/src/platform.cpp	2007-02-18 21:30:57.765625000 -0600
+@@ -201,15 +201,6 @@
+ int SystemStat(const char* name, struct stat* stat_struct)
+ {
+     int result = ::stat(name, stat_struct);
+-#ifdef HAVE_SYS_CYGWIN_H
+-    //
+-    // Up through cygwin 1.3.10, the hash function which determines inodes
+-    // was not strong enough, so java/net and java/nio occasionally get the
+-    // same inode without this hack.
+-    //
+-    if (result == 0)
+-        stat_struct -> st_ino += name[strlen(name) - 1];
+-#endif // HAVE_SYS_CYGWIN_H
+     return result;
+ }
+ 

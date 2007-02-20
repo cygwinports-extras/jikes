@@ -44,7 +44,8 @@ This will create:
 
 Files included in the binary package:
 
-  /usr/bin/jikes.exe
+  /usr/bin/jikes
+  /usr/bin/jikes-bin.exe
   /usr/include/jikesapi.h
   /usr/share/doc/Cygwin/jikes-1.22.README
   /usr/share/doc/jikes-1.22/AUTHORS
@@ -60,6 +61,10 @@ Files included in the binary package:
 ------------------
 
 Port Notes:
+
+----- version 1.22-4 -----
+Include wrapper script to (attempt to) define bootclasspath automatically,
+adapted from the Gentoo Linux wrapper.
 
 ----- version 1.22-3 -----
 Rebuilt with cygport.

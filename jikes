@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# Copyright (c) 2005, Thomas Matthijs <axxo@gentoo.org>
+# Copyright (c) 2005, Gentoo Foundation
+# Copyright (c) 2007, Yaakov Selkowitz for Cygwin Ports
+#
+# Licensed under the GNU General Public License, v2.
+#
+
+verbose() {
+	if [ -n "$VERBOSE" ]
+	then
+		echo "$@"
+	fi
+
+	"$@"
+}
+
+case "$*" in
+	*-bootclasspath*)
+		# better know what you are doing!!
+		verbose exec /usr/bin/jikes-bin "$@"
+		return $?
+		;;
+esac	
+
+# Try FOSS implementations first
+if [ -z ${BOOTCLASSPATH} ]
+then
+	for vm in /usr/share/classpath/glibj.zip \
+			  /usr/share/java/libgcj-3.4.4.jar
+	do
+		if [ -f ${vm} ]
+		then
+			BOOTCLASSPATH=${vm}
+			break
+		fi
+	done
+fi
+			  
+# Now try Win32 Sun Java
+if [ -z "${BOOTCLASSPATH}" ]
+then
+	JRE_KEY="/HKLM/SOFTWARE/JavaSoft/Java Runtime Environment"
+	JRE_VER=$(regtool -q get "$JRE_KEY/CurrentVersion")
+
+	if [ ! -z "$JRE_VER" ]
+	then
+		BOOTCLASSPATH="$(cygpath -u "$(regtool get "$JRE_KEY/$JRE_VER/JavaHome")"/lib/rt.jar)"
+	else
+		JDK_KEY="/HKLM/SOFTWARE/JavaSoft/Java Development Kit"
+		JDK_VER=$(regtool -q get "$JDK_KEY/CurrentVersion")
+
+		if [ ! -z "$JDK_VER" ]
+		then
+			BOOTCLASSPATH="$(cygpath -u "$(regtool get "$JDK_KEY/$JDK_VER/JavaHome")"/jre/lib/rt.jar)"
+		else
+			# better know what you are doing!!
+			# echo "jikes: Could not find Java runtime classes" > /dev/stderr
+			verbose exec /usr/bin/jikes-bin "$@"
+			return $?
+		fi
+	fi
+fi
+
+verbose exec /usr/bin/jikes-bin -bootclasspath ${BOOTCLASSPATH} "$@"
+return $?
