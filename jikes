@@ -25,7 +25,7 @@ case "$*" in
 esac	
 
 # Try FOSS implementations first
-if [ -z ${BOOTCLASSPATH} ]
+if [ -z "${BOOTCLASSPATH}" ]
 then
 	for vm in /usr/share/classpath/glibj.zip \
 			  /usr/share/java/libgcj-3.4.4.jar
