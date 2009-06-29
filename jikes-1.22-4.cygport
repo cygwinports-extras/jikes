@@ -1,7 +1,7 @@
 DESCRIPTION="Java high-performance bytecode compiler"
 HOMEPAGE="http://jikes.sourceforge.net/"
-SRC_URI=mirror://sourceforge/${PN}/${P}.tar.bz2
-PATCH_URI=mirror://portage/dev-java/${PN}/files/deprecated.patch
+SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
+PATCH_URI="mirror://portage/dev-java/${PN}/files/deprecated.patch"
 
 src_install() {
 	cd ${B}
